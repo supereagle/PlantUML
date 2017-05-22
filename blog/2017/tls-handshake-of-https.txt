@@ -1,0 +1,23 @@
+@startuml
+
+title TLS Handshake of HTTPS
+
+== Handshake ==
+
+Client -> Server: ClientHello:\n* client random\n* SSL version\n* supported cipher suites compression methods
+note left: Generate client random
+
+Server -> Client: ServerHello:\n* server random\n* SSL version\n* used cipher suites compression methods\n* public key
+note right: Generate server random
+
+Client -> Server: Client Finished: \n* premaster secret\n* change cipher spec
+note left: Generate premaster secret and encrypt it with public key
+
+Server -> Client: Server Finished
+note right: Decrypt with private key to get premaster secret
+
+== Session ==
+
+Client <-> Server: Generate session key and communicate in security session
+
+@enduml
