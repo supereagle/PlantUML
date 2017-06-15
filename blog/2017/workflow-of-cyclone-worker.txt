@@ -1,0 +1,60 @@
+@startuml
+
+title Workflow of Cyclone Worker
+
+participant "cmd/worker" as CmdWorker
+
+CmdWorker -> Worker: Run()
+
+Worker -> Worker: handleEvent()
+
+Worker -> Worker: createVersion()
+
+Worker -> Worker: yamlBuild()
+
+opt Build
+
+Worker -> helper: ExecBuild()
+
+helper -> Manager: ExecPreBuild(), ExecBuild()
+
+Manager -> runner: RunNode()
+
+runner -> docker: run()
+
+docker -> docker: start()
+
+end
+
+opt Integration
+
+Worker -> helper: ExecIntegration()
+
+helper -> Manager: Setup(), ExecIntegration()
+
+note over Manager, docker: The same with other stages
+
+end
+
+opt Publish
+
+Worker -> helper: ExecPublish()
+
+helper -> Manager: ExecPublish(), ExecPostBuild()
+
+note over Manager, docker: The same with other stages
+
+end
+
+opt Deploy
+
+Worker -> helper: ExecDeploy()
+
+helper -> helper: DoYamlDeploy(), DoPlansDeploy()
+
+
+end
+
+Worker -> Worker: sendEvent()
+
+@enduml
