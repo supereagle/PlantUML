@@ -1,0 +1,13 @@
+@startuml
+
+title Workflow of K8s CMD Template
+
+Main -> Options: New options
+
+Main -> Options: Add flag
+
+Main -> Main: Init flags and logs
+
+Main -> Server: Run server
+
+@enduml
