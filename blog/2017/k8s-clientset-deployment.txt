@@ -1,0 +1,15 @@
+@startuml
+
+title Deployment Client of K8s Clientset
+
+Clientset -> Clientset: NewForConfig(c *rest.Config)
+
+Clientset -> AppsV1beta1Client: AppsV1beta1()
+
+AppsV1beta1Client -> DeploymentClient: Deployments(namespace string)
+
+DeploymentClient -> DeploymentClient: newDeployments(c *AppsV1beta1Client, namespace string)
+
+DeploymentClient -> DeploymentClient: Create()/Update()/Delete()/...
+
+@enduml

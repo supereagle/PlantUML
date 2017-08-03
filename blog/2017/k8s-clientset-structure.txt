@@ -1,0 +1,56 @@
+@startuml
+
+title K8s Clientset Structure
+
+interface AppsV1beta1Interface {
+	Deployments(namespace string) DeploymentInterface
+	Scales(namespace string) ScaleInterface
+	StatefulSets(namespace string) StatefulSetInterface
+}
+interface CoreV1Interface {
+	Pods(namespace string) PodInterface
+	Services(namespace string) ServiceInterface
+	Namespaces() NamespaceInterface
+	Endpoints(namespace string) EndpointsInterface
+}
+
+Class Clientset {
+	CoreV1() corev1.CoreV1Interface
+	AppsV1beta1() appsv1beta1.AppsV1beta1Interface
+}
+
+Clientset --o AppsV1beta1Client
+Clientset --o CoreV1Client
+
+
+AppsV1beta1Client : restClient rest.Interface
+CoreV1Client : restClient rest.Interface
+
+AppsV1beta1Client --|> AppsV1beta1Interface
+CoreV1Client --|> CoreV1Interface
+
+Class deployments {
+	Create()
+	Update()
+	Delete()/...
+}
+
+Class pods {
+	Create()
+	Update()
+	Delete()/...
+}
+
+Class services {
+	Create()
+	Update()
+	Delete()/...
+}
+
+AppsV1beta1Client - deployments : new >
+
+CoreV1Client - pods : new >
+
+CoreV1Client - services : new >
+
+@enduml
